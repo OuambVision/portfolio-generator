@@ -3,7 +3,7 @@ name: Déployer un site Next.js sur Pages
 on:
   push:
     branches:
-      - '**'
+      - "**"
   workflow_dispatch:
 
 permissions:
@@ -18,6 +18,8 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,29 +86,6 @@ jobs:
       - name: Obtenir l'URL
         run: |
           echo "URL: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/$(echo ${{ github.ref_name }} | sed 's/refs\/heads\///')/"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # # Sample workflow for building and deploying a Next.js site to GitHub Pages
 # #
