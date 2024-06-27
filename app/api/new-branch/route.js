@@ -21,7 +21,7 @@ export async function PUT(request) {
         });
         
         const shaCommit = commit.data.sha;
-        console.log(shaCommit)
+        console.log(commit.data)
 
         // Créer une nouvelle branche
         const newRef = await octokit.git.createRef({
