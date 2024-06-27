@@ -41,7 +41,7 @@ export async function PUT(request) {
         const shaCommit = commits[0].sha;
         console.log(commits.length);
         for (let i = 0; i < commits.length; i++) {
-            console.log(i, commits[i].commit.message);
+            console.log((i+1), commits[i].commit.message);
         }
 
         // Créer une nouvelle branche
