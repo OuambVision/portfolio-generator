@@ -7,11 +7,7 @@ on:
       - '**'          # matches every branch
       - '!main'       # excludes main
       - '!gh-pages'   # excludes gh-pages
-
-    # Ignore push events that are also branch creation
-    tags-ignore:
-      - '*'
-
+      
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -19,6 +15,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, '[create]')" # Ignore push events that are branch creation
     steps:
       - name: Checkout
         uses: actions/checkout@v4
