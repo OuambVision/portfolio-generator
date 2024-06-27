@@ -77,8 +77,9 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v3
         with:
+          name: nextjs-site
           path: ./out
 
   # Deployment job
@@ -92,16 +93,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Download artifact
-        uses: actions/download-pages-artifact@v3
+        uses: actions/download-artifact@v3
         with:
+          name: nextjs-site
           path: ./out
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         with:
           branch: 'gh-pages'
-          folder: 'out'
+          folder: './out'
           target-folder: ${{ github.ref_name }} # Deploys the specific branch to its own folder
+
 
 
 
