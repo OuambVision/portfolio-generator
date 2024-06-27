@@ -15,7 +15,7 @@ export async function PUT(request) {
     try {
         let commits = [];
         let page = 1;
-        let perPage = 150; // Nombre de commits par page (max 100)
+        let perPage = 200; // Nombre de commits par page (max 100)
 
         // Récupérer tous les commits de la branche principale
         while (true) {
@@ -41,7 +41,7 @@ export async function PUT(request) {
         const shaCommit = commits[0].sha;
         console.log(commits.length);
         for (let i = 0; i < commits.length; i++) {
-            console.log((i+1), commits[i].commit.message);
+            console.log(i, commits[i].commit.message);
         }
 
         // Créer une nouvelle branche
