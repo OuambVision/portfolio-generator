@@ -17,12 +17,12 @@ export async function PUT(request) {
           const { data: commits } = await octokit.repos.listCommits({
             owner,
             repo,
-            sha: 'main',
-            per_page: 1,
+            sha: 'main'
         });
         
         const shaCommit = commits[0].sha;
-        console.log(commits[0]);
+        // console.log(commits.length);
+        // for(let i=0; i<commits.length; i++){ console.log((i+1), commits[i].commit.message);}
 
         // Créer une nouvelle branche
         const newRef = await octokit.git.createRef({
