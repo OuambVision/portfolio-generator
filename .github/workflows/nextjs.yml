@@ -8,7 +8,7 @@ on:
       - '!main'       # excludes main
       - '!gh-pages'   # excludes gh-pages
 
-    # Ignore push events that are also branch creation events
+    # Ignore push events that are also branch creation
     tags-ignore:
       - '*'
 
