@@ -37,7 +37,7 @@ jobs:
           github_token: ${{ secrets.TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages
-          cname: ${{ github.ref_name }}
+          destination_dir: ${{ github.ref_name }}
 
 
 
