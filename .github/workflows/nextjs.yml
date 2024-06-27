@@ -1,4 +1,4 @@
-# Workflow pour construire et déployer un site Next.js sur GitHub Pages
+# Workflow pour construire et déployer un site Next.js sur GitHub Pages avec téléversement d'artifact
 
 name: Déployer le site Next.js sur Pages
 
@@ -75,10 +75,10 @@ jobs:
       - name: Construire avec Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Téléverser l'artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: site-construit
-          path: .next
+          path: .next  # Assurez-vous que c'est le bon chemin vers le répertoire construit à déployer
 
   # Job de déploiement
   deploy:
@@ -90,12 +90,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Télécharger l'artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: site-construit  # Assurez-vous que c'est le même nom d'artifact utilisé dans le job de construction
+          path: .next
       - name: Déployer vers GitHub Pages
         uses: actions/deploy-pages@v4
         with:
           deploy_dir: |
             ./out/${{ github.ref_slug }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
 
 
 
