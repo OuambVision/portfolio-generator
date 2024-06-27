@@ -19,10 +19,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - name: Set up Git
-      #   run: |
-      #     git config --global user.email "ouambvision@gmail.com"
-      #     git config --global user.name "OuambVision"
+      - name: Set up Git
+        run: |
+          git config --global user.email "ouambvision@gmail.com"
+          git config --global user.name "OuambVision"
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
