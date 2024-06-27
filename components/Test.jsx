@@ -19,7 +19,7 @@ export default function Test() {
         if (res.status === 200) {
             const newBranchName = `branche-${name}`; // Nom de la nouvelle branche
             const filePath = 'components/Template1/HomeSection/homeSection.json'; // Chemin vers votre fichier JSON dans le dépôt
-
+            
             const result = await fetch('/api/update-json', {
                 method: 'PUT',
                 headers: {
