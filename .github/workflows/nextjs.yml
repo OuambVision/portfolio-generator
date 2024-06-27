@@ -22,8 +22,6 @@ jobs:
   # Job de construction
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,13 +51,20 @@ jobs:
         with:
           name: production-artifacts
           path: .next
+      - name: Configurer Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Nettoyer le répertoire de travail
+        run: git worktree prune
       - name: Déployer sur GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Utilisez un token GitHub avec accès au repo
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Utilisez un token GitHub avec accès au repo
           BRANCH: gh-branch
           FOLDER: .next
           TARGET_FOLDER: ${{ github.ref_name }} # Utilise le nom de la branche pour le sous-dossier
+
 
 
 
