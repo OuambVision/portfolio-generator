@@ -13,15 +13,15 @@ export async function PUT(request) {
     const newBranchName = `branche-${name}`;
 
     try {
-        // pour obtenir le dernier commit d'une branche spécifique 
-        const commit = await octokit.repos.getCommit({
+        // Pour obtenir le dernier commit de la branche principale
+        const branch = await octokit.repos.getBranch({
             owner,
             repo,
-            ref: 'main',
+            branch: 'main',
         });
-        
-        const shaCommit = commit.data.sha;
-        console.log(commit.data)
+
+        const shaCommit = branch.data.commit.sha;
+        console.log(branch.data);
 
         // Créer une nouvelle branche
         const newRef = await octokit.git.createRef({
@@ -30,7 +30,6 @@ export async function PUT(request) {
             ref: `refs/heads/${newBranchName}`,
             sha: shaCommit,
         });
-
         return NextResponse.json({ status: 200, newRef });
     } catch (error) {
         console.log(error)
