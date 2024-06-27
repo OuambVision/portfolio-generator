@@ -4,8 +4,8 @@ on:
   push:
     # Ignore pushes to 'main' and 'gh-pages'
     branches-ignore:
-      - main
       - gh-pages
+      - main
     # Ignore push events that are also branch creation events
     tags-ignore:
       - '*'
