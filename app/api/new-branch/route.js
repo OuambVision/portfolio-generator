@@ -13,16 +13,36 @@ export async function PUT(request) {
     const newBranchName = `branche-${name}`;
 
     try {
-          // Pour obtenir le dernier commit de la branche principale
-          const { data: commits } = await octokit.repos.listCommits({
-            owner,
-            repo,
-            sha: 'main'
-        });
-        
+        let commits = [];
+        let page = 1;
+        let perPage = 100; // Nombre de commits par page (max 100)
+
+        // Récupérer tous les commits de la branche principale
+        while (true) {
+            const response = await octokit.repos.listCommits({
+                owner,
+                repo,
+                sha: 'main',
+                per_page: perPage,
+                page: page
+            });
+
+            commits = commits.concat(response.data);
+
+            if (response.data.length < perPage) {
+                // Il n'y a plus de pages suivantes, sortie de la boucle
+                break;
+            }
+
+            page++;
+        }
+
+        // Récupérer le SHA du dernier commit
         const shaCommit = commits[0].sha;
         console.log(commits.length);
-        for(let i=0; i<commits.length; i++){ console.log((i+1), commits[i].commit.message);}
+        for (let i = 0; i < commits.length; i++) {
+            console.log((i + 1), commits[i].commit.message);
+        }
 
         // Créer une nouvelle branche
         const newRef = await octokit.git.createRef({
