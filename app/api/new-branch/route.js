@@ -13,19 +13,21 @@ export async function PUT(request) {
     const newBranchName = `branche-${name}`;
 
     try {
-        // Obtenir la référence de la branche principale
-        const { data: refData } = await octokit.git.getRef({
+        // Obtenir le SHA de la branche principale
+        const { data: branchData } = await octokit.rest.repos.getBranch({
             owner,
             repo,
-            ref: 'heads/main', // ou 'heads/master'
+            branch: 'main', // ou 'master'
         });
+
+        const shaMain = branchData.commit.sha;
 
         // Créer une nouvelle branche
         const newRef = await octokit.git.createRef({
             owner,
             repo,
             ref: `refs/heads/${newBranchName}`,
-            sha: refData.object.sha,
+            sha: shaMain,
         });
 
         return NextResponse.json({ status: 200, newRef });
