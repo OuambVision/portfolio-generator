@@ -1,12 +1,9 @@
 name: Déployer le site Next.js sur Pages
 
 on:
-  # S'exécute sur les pushs ciblant n'importe quelle branche
   push:
     branches:
       - '*'
-
-  # Permet d'exécuter ce workflow manuellement depuis l'onglet Actions
   workflow_dispatch:
 
 permissions:
@@ -19,7 +16,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Job de construction
   build:
     runs-on: ubuntu-latest
     steps:
@@ -30,21 +26,22 @@ jobs:
         with:
           node-version: '20'
       - name: Installer les dépendances
-        run: npm install # ou utilisez yarn si vous préférez
+        run: npm install
       - name: Construire avec Next.js
-        run: npm run build # ajustez ceci si vous avez un script de build différent
+        run: npm run build
       - name: Archiver les artefacts de production
         uses: actions/upload-artifact@v2
         with:
           name: production-artifacts
           path: .next
 
-  # Job de déploiement
   deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     needs: build
+    outputs:
+      deployment-url: ${{ steps.display-url.outputs.url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -62,10 +59,112 @@ jobs:
       - name: Déployer sur GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          ACCESS_TOKEN: ${{ secrets.PERSONAL_TOKEN }} # Utilisez un token GitHub avec accès au repo
-          BRANCH: gh-branch
+          ACCESS_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          BRANCH: gh-pages
           FOLDER: .next
-          TARGET_FOLDER: ${{ github.ref_name }} # Utilise le nom de la branche pour le sous-dossier
+          TARGET_FOLDER: ${{ github.ref_name }}
+      - name: Afficher l'URL de déploiement
+        id: display-url
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const branchName = process.env.GITHUB_REF.split('/').pop();
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${branchName}/`;
+            console.log(`Site déployé sur: ${url}`);
+            return { url };
+
+# Optionnel: Utiliser l'URL de déploiement dans d'autres jobs
+# post-deploy:
+#   runs-on: ubuntu-latest
+#   needs: deploy
+#   steps:
+#     - name: Afficher l'URL de déploiement
+#       run: echo "Le site est déployé à l'URL: ${{ needs.deploy.outputs.deployment-url }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# name: Déployer le site Next.js sur Pages
+
+# on:
+#   # S'exécute sur les pushs ciblant n'importe quelle branche
+#   push:
+#     branches:
+#       - '*'
+
+#   # Permet d'exécuter ce workflow manuellement depuis l'onglet Actions
+#   workflow_dispatch:
+
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
+
+# concurrency:
+#   group: "pages"
+#   cancel-in-progress: false
+
+# jobs:
+#   # Job de construction
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+#       - name: Configurer Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#       - name: Installer les dépendances
+#         run: npm install # ou utilisez yarn si vous préférez
+#       - name: Construire avec Next.js
+#         run: npm run build # ajustez ceci si vous avez un script de build différent
+#       - name: Archiver les artefacts de production
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: production-artifacts
+#           path: .next
+
+#   # Job de déploiement
+#   deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+#     needs: build
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+#       - name: Télécharger les artefacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: production-artifacts
+#           path: .next
+#       - name: Configurer Git
+#         run: |
+#           git config --global user.name 'github-actions[bot]'
+#           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+#       - name: Nettoyer le répertoire de travail
+#         run: git worktree prune
+#       - name: Déployer sur GitHub Pages
+#         uses: JamesIves/github-pages-deploy-action@4.1.4
+#         with:
+#           ACCESS_TOKEN: ${{ secrets.PERSONAL_TOKEN }} # Utilisez un token GitHub avec accès au repo
+#           BRANCH: gh-branch
+#           FOLDER: .next
+#           TARGET_FOLDER: ${{ github.ref_name }} # Utilise le nom de la branche pour le sous-dossier
 
 
 
