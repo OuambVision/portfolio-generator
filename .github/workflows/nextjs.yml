@@ -1,11 +1,14 @@
 name: Deploy Next.js site to Pages
 
 on:
-  # Runs on pushes targeting any branch except 'main' and 'gh-pages'
   push:
+    # Ignore pushes to 'main' and 'gh-pages'
     branches-ignore:
       - main
       - gh-pages
+    # Ignore push events that are also branch creation events
+    tags-ignore:
+      - '*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
