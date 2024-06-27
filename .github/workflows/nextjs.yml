@@ -60,7 +60,7 @@ jobs:
       - name: Déployer sur GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Utilisez un token GitHub avec accès au repo
+          ACCESS_TOKEN: ${{ secrets.PERSONAL_TOKEN }} # Utilisez un token GitHub avec accès au repo
           BRANCH: gh-branch
           FOLDER: .next
           TARGET_FOLDER: ${{ github.ref_name }} # Utilise le nom de la branche pour le sous-dossier
