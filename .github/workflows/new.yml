@@ -3,10 +3,10 @@ name: Déployer un site Next.js sur Pages
 on:
   push:
     branches:
-      - "**"
+      - "*"
   create:
     branches:
-      - "**"
+      - "*"
   workflow_dispatch:
 
 permissions:
